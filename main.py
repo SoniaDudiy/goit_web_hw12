@@ -29,9 +29,10 @@ def healthchecker(db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail="Error connecting to the database")
 
 
+app.include_router(auth.router)
 app.include_router(contacts.router)
 app.include_router(search.search)
-app.include_router(auth.router)
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="localhost", port=9000, reload=True)
