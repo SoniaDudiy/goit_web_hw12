@@ -10,11 +10,9 @@ from src.routes import search
 from src.routes import auth
 
 from src.database.db import get_db
-from src.routes import contacts
+from src.routes import contacts, search, auth
 
 app = FastAPI()
-
-
 
 @app.get("/api/healthchecker")
 def healthchecker(db: Session = Depends(get_db)):

@@ -1,3 +1,5 @@
+import enum
+
 from sqlalchemy import Boolean, Column, Integer, String, DateTime, Date, func, event, Enum, ForeignKey
 from sqlalchemy.orm import declarative_base, relationship
 
@@ -19,6 +21,10 @@ class Contact(Base):
     user_id = Column('user_id', ForeignKey('users.id', ondelete='CASCADE'), default=1)
     user = relationship('User', backref='contacts', lazy="joined")
 
+class Role(enum.Enum):
+    admin: str = "admin"
+    moderator: str = "moderator"
+    user: str = "user"
 
 @event.listens_for(Contact, 'before_insert')
 def updated_favorite(mapper, conn, target):
@@ -41,3 +47,4 @@ class User(Base):
     avatar = Column(String(255), nullable=True)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+    roles = Column('roles', Enum(Role), default=Role.moderator)
